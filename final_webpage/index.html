@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en"><head>  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Computer Vision Class Project
+  | ECE, Virginia Tech | Fall 2015: ECE 5554/4984</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+<!-- Le styles -->  
+  <link href="css/bootstrap.css" rel="stylesheet">
+<style>
+body {
+padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+.vis {
+color: #3366CC;
+}
+.data {
+color: #FF9900;
+}
+</style>
+  
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements --><!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<div class="container">
+<div class="page-header">
+
+<!-- Title and Name --> 
+<h1>Specialized OCR</h1> 
+<span style="font-size: 20px; line-height: 1.5em;"><strong>Jesse Huang
+        (jhuang347), Shuyi Teng (steng6)</strong></span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Fall 2019 Computer Vision: Class Project</span><br>
+<span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span>
+<hr>
+
+<br><br>
+<!-- Introduction -->
+<h3>Introduction</h3>
+Images can be very complex and may contain many different points of interest -
+or more importantly, areas that are not interesting. As a result, tools meant
+for a specific usage may fail to perform adequately when applied on images with
+outside context. This project will take a domain and attempt to rectify this
+problem. <br>
+In specific, we want to be able to extract the license plate number from cars
+without including any superfluous information. Existing approaches exist, but
+they take advantage of the fact that the main sources of text are from license
+plates. See the figure below as an example from <a
+href=http://www.openalpr.com/cloud-api.html">this website</a>.
+<br> <br>
+<div class='row' style="text-align: center;">
+<img style="height: 325px;" alt="" src="ALPR-text.png">
+<img style="height: 325px;" alt="" src="teaser.png">
+</div>
+<br>
+Our approach is unique in the fact that we will combine different strategies to
+only extract information from license plates. This will lead to an application
+that can be used in more generalized models.
+
+
+<br><br>
+<!-- Approach -->
+<h3>Approach</h3>
+The first part to this specialized OCR is to separate the regions of the image
+that are of interest. This is accomplished using image segmentation. After
+identifying regions of interest, we can perform optical character recognition on
+these regions in order to obtain the license plate numbers. <br>
+There are many different implementations of both image segmentation as well as
+optical character recognition. As a result, we want to experiment with the
+different implementations and see which combinations result in accurate
+representations.
+
+<br><br>
+<!-- Results -->
+<h3>Experiments and results</h3>
+One requirement for this project is to collect a dataset. We can leverage 
+<a href='https://platerecognizer.com/number-plate-datasets/'>this dataset</a>,
+which is a collection of license plates. We will focus on US license plates.
+
+Because there is not a large dataset with textual annotations for license plates
+available, we will have a small test set that we can grade by inspection -
+hand-annotated OCR. Each instance will be marked as a binary correct or
+incorrect, depending on whether it was detected or not. Additionally, there may
+be penalties for marking a region as a license plate if there does not exist
+one. As a consequence of a small test set, classification accuracy will not be
+precise, but will give a good idea of which methods work better than others.
+<br>
+
+We will try multiple different image segmentation methods. Some will include
+in-class methods such as edge detection or texture-based detection. We will also
+leverage other methods including convolutional neural nets. Some models we will
+experiment with are <a href='https://arxiv.org/abs/1506.02640'>YOLO</a> and
+<a href='https://arxiv.org/abs/1506.01497'>Faster RCNN</a>. <br>
+
+As for OCR, we will use <a
+href='https://github.com/openalpr/openalpr'>OpenALPR</a>. This is an API that
+performs OCR on images to detect and digitalize license plate numbers. By
+passing regions of interest into the API, we should be able to extract the
+license plate numbers for each instance. Alternatively, we could use a simpler,
+more basic OCR such as <a
+href='https://arxiv.org/abs/1506.02640'>pytesseract</a> and see how performance
+differs - if at all.
+<br>
+
+For our machine learning image segmentaton, we will tend to use pre-trained models. The
+reason for this is that we do not have access to a particularly large dataset.
+However, in the case that we do train our own models, we will reserve 100 images
+for the test set, while all other images will be used for training. These 100
+images are held aside for hand-annotating and grading. <br>
+
+<!--
+Provide details about the experimental set up (number of images/videos, number
+of datasets you experimented with, train/test split if you used machine learning
+algorithms, etc.). Describe the evaluation metrics you used to evaluate how well
+your approach is working. Include clear figures and tables, as well as
+illustrative qualitative examples if appropriate. Be sure to include obvious
+baselines to see if your approach is doing better than a naive approach (e.g.
+for classification accuracy, how well would a classifier do that made random
+decisions?). Also discuss any parameters of your algorithms, and tell us how you set the values of those parameters. You can also show us how the performance
+varies as you change those parameter values. Be sure to discuss any trends you
+see in your results, and explain why these trends make sense. Are the results as
+expected? Why?
+-->
+
+<br><br>
+<!-- Appendix -->
+<h3>Appendix</h3>
+<a href='https://arxiv.org/abs/1506.01497'>Faster RCNN</a> <br>
+<a href='https://github.com/openalpr/openalpr'>OpenALPR</a> <br>
+<a href='https://platerecognizer.com/number-plate-datasets/'>Plate Recognizer Dataset</a> <br>
+<a href='https://arxiv.org/abs/1506.02640'>pytesseract</a>
+<a href='https://arxiv.org/abs/1506.02640'>YOLO</a> <br>
+</div>
+</div>
+
+<br><br>
+
+</body></html>
