@@ -38,7 +38,9 @@ color: #FF9900;
 <span style="font-size: 20px; line-height: 1.5em;"><strong>Jesse Huang
         (jhuang347), Shuyi Teng (steng6)</strong></span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Fall 2019 Computer Vision: Class Project</span><br>
-<span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span>
+<span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span><br>
+<span style="font-size: 18px; line-height: 1.5em;">
+    <a href='https://github.com/shuyteng/CS6476-Project'>Github Repo</a></span>
 <hr>
 
 <br><br>
@@ -114,6 +116,37 @@ reason for this is that we do not have access to a particularly large dataset.
 However, in the case that we do train our own models, we will reserve 100 images
 for the test set, while all other images will be used for training. These 100
 images are held aside for hand-annotating and grading. <br>
+
+<h3>Midterm Update</h3>
+We have a working pipeline that allows us to perform image segmentation on the
+image, and output corresponding segments. We are able to pass these segments
+into an OCR model in order to retrieve license plate tags.
+<br>
+In our first implementations, we have a k-means algorithm to segment the image.
+See example images on the bottom. We are also using the OpenALPR API to extract
+the plates from the image segments.
+<br> <br>
+<div class='row' style="text-align: center;">
+<img style="width: 225px;" alt="" src="res/kmeans/center 0.png">
+<img style="width: 225px;" alt="" src="res/kmeans/center 2.png">
+<img style="width: 225px;" alt="" src="res/kmeans/center 4.png">
+<img style="width: 225px;" alt="" src="res/kmeans/center 6.png">
+<img style="width: 225px;" alt="" src="res/kmeans/center 8.png">
+</div>
+<br>
+One problem is that we have not filtered out segments that are not license
+plates, so passing these into the OCR algorithm will either yield no results or
+jumbled results. So our immediate next steps are to find a way to determine
+whether a segment is a license plate or not.
+<br>
+In the future, we plan to experiment with more segmentation algorithms including
+edge detection with a Hough transform or convolutional neural networks like
+Faster-RCNN. We also want to research more OCR algorithms. In addition, being
+able to use confidence for both plate detection and plate OCR would allow us to
+give a confidence for a final result of a license plate.
+<br>
+Our work is included in this <a
+    href='https://github.com/shuyteng/CS6476-Project'>Github Repo</a>.
 
 <!--
 Provide details about the experimental set up (number of images/videos, number
