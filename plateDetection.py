@@ -1,9 +1,11 @@
 # %% import necessary libraries
 
 import matplotlib.pyplot as plt
-from PIL import Image
 import numpy as np
 import cv2
+import os
+
+from PIL import Image
 
 # %% Create Class
 
@@ -20,43 +22,58 @@ class plateDetection:
         criteria = (cv2.TERM_CRITERIA_EPS +
                     cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
         attempts = 10
-        _, label, center = cv2.kmeans(
-                self.vectorized, k, None, criteria, attempts, cv2.KMEANS_RANDOM_CENTERS)
+        _, label, center = cv2.kmeans(self.vectorized, k, None, criteria,
+                                      attempts, cv2.KMEANS_PP_CENTERS)
         center = np.uint8(center)
         res = center[label.flatten()]
         result_image = res.reshape((self.image.shape))
-        plt.figure(figsize=(16, 8))
+        plt.figure(figsize=(10, 6))
         plt.imshow(self.img)
         plt.title('Original Image')
         plt.xticks([]), plt.yticks([])
 
-        plt.figure(figsize=(16, 8))
+        plt.figure(figsize=(10, 6))
         plt.imshow(result_image)
         plt.title('Segmented Image when K = %i' % k)
         plt.xticks([]), plt.yticks([])
+
         # trying to create and save new image, but k-means'result isn't
         # quite suitable for this
-#        row, col, _ = result_image.shape
-#        new_image = np.zeros((row, col, 3), np.uint8)
-#        for i in range(0, row):
-#            for j in range(0, col):
-#                if (result_image[i][j] == center[4]).all():
-#                    new_image[i][j] = center[4]
-#        plt.imshow(new_image)
+        try:
+            os.mkdir('kmeans_results_k=%i/' % k)
+        except FileExistsError:
+            pass
+        row, col, _ = result_image.shape
+        new_image = np.zeros((row, col, 3), np.uint8)
+        for c in range(center.shape[0]):
+            new_image = np.zeros((row, col, 3), np.uint8)
+            for i in range(0, row):
+                for j in range(0, col):
+                    if (result_image[i][j] == center[c]).all():
+                        new_image[i][j] = center[c]
+            cv2.imwrite('kmeans_results_k=%i/center %i.png' % (k, c), new_image)
+        print('Done')
+
 
     def segmentation(self):
         method = 'n/a'
-        while method not in ['kmeans', 'mean shift', 'normalized cut']:
+        method_list = ['kmeans', 'mean shift', 'normalized cut', 'graph cut']
+        while method not in method_list:
             method = input('please indicate a segmentation method: choose ' +
-                           '"kmeans", "mean shift", or "normalized cut": \n')
+                           '"kmeans", "mean shift", "normalized cut", or' +
+                           '"graph cut": \n')
 
         if method == 'kmeans':
-            k = input('choose your cluster number: ')
+            k = input('choose your k: ')
             self.k_means(int(k))
 
         elif method == 'mean shift':
-            print('It\'s like kmeans without initialization so ...')
+            print('Will implement if I had time...')
+
         elif method == 'normalized cut':
+            print('waiting to be implemented...')
+
+        elif method == 'graph cut':
             print('waiting to be implemented...')
 
 
