@@ -85,6 +85,7 @@ class plateDetection:
                         5, cv2.GC_INIT_WITH_RECT)
             mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
             img = img * mask2[:, :, np.newaxis]
+            img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
             plt.figure(figsize=(16, 8))
             plt.imshow(img), plt.show()
             cv2.imwrite('graphCut_results/rect_seg.jpg', img)
@@ -101,6 +102,7 @@ class plateDetection:
                     5, cv2.GC_INIT_WITH_MASK)
             mask3 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
             img = img * mask3[:, :, np.newaxis]
+            img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
             plt.figure(figsize=(16, 8))
             plt.imshow(img), plt.show()
             cv2.imwrite('graphCut_results/mask_seg.jpg', img)
