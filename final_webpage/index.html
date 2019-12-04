@@ -20,6 +20,10 @@ color: #3366CC;
 .data {
 color: #FF9900;
 }
+p{
+	text-indent:2.0em;
+	font-size:15px;
+}
 </style>
   
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -29,12 +33,12 @@ color: #FF9900;
 <![endif]-->
 </head>
 
-<body>
+<body leftmargin='100' rightmargin='100'>
 <div class="container">
 <div class="page-header">
 
 <!-- Title and Name --> 
-<h1>Specialized OCR</h1> 
+<h1>Specialized OCR on Detecting Car Plates</h1> 
 <span style="font-size: 20px; line-height: 1.5em;"><strong>Jesse Huang
         (jhuang347), Shuyi Teng (steng6)</strong></span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Fall 2019 Computer Vision: Class Project</span><br>
@@ -43,88 +47,115 @@ color: #FF9900;
     <a href='https://github.com/shuyteng/CS6476-Project'>Github Repo</a></span>
 <hr>
 
-<br><br>
+
+<!-- Abstract -->
+<h3>Abstract</h3>
+<p>
+	An OCR system specialized for detecting license plates in real-life images, with the ability to differentiate between car plates and other texted objects like road signs and shop signs. We will experiment with k-means clustering, graph cut methods (and more) to extract plate images and use specialized OCR system to recognize plate information.
+</p>
+<br>
+
 <!-- Introduction -->
 <h3>Introduction</h3>
-Images can be very complex and may contain many different points of interest -
-or more importantly, areas that are not interesting. As a result, tools meant
-for a specific usage may fail to perform adequately when applied on images with
-outside context. This project will take a domain and attempt to rectify this
-problem. <br>
-In specific, we want to be able to extract the license plate number from cars
-without including any superfluous information. Existing approaches exist, but
-they take advantage of the fact that the main sources of text are from license
-plates. See the figure below as an example from <a
-href=http://www.openalpr.com/cloud-api.html">this website</a>.
-<br> <br>
-<div class='row' style="text-align: center;">
-<img style="height: 325px;" alt="" src="ALPR-text.png">
-<img style="height: 325px;" alt="" src="teaser.png">
-</div>
-<br>
-Our approach is unique in the fact that we will combine different strategies to
-only extract information from license plates. This will lead to an application
-that can be used in more generalized models.
+<p>
+		Images can be very complex and may contain many different points of interest -
+	or more importantly, areas that are not interesting. As a result, tools meant
+	for a specific usage may fail to perform adequately when applied on images with
+	outside context. This project will take a domain and attempt to rectify this
+	problem. <br>
+		In specific, we want to be able to extract the license plate number from cars
+	without including any superfluous information. Existing approaches exist, but
+	they take advantage of the fact that the main sources of text are from license
+	plates. See the figure below as an example from <a
+	href='http://www.openalpr.com/cloud-api.html'>this website</a>.
+</p>
+	<br> <br>
+	<div class='row' style="text-align: center;">
+	<img style="height: 325px;" alt="" src="ALPR-text.png">
+	<img style="height: 325px;" alt="" src="teaser.png">
+	</div>
+	<br>
+<p>
+		Our approach is unique in the fact that we will combine different strategies to
+	only extract information from license plates. This will lead to an application
+	that can be used in more generalized models.
+</p>
 
 
 <br><br>
 <!-- Approach -->
 <h3>Approach</h3>
-The first part to this specialized OCR is to separate the regions of the image
-that are of interest. This is accomplished using image segmentation. After
-identifying regions of interest, we can perform optical character recognition on
-these regions in order to obtain the license plate numbers. <br>
-There are many different implementations of both image segmentation as well as
-optical character recognition. As a result, we want to experiment with the
-different implementations and see which combinations result in accurate
-representations.
+<p>
+		The first part to this specialized OCR is to separate the regions of the image
+	that are of interest. This is accomplished using image segmentation. After
+	identifying regions of interest, we can perform optical character recognition on
+	these regions in order to obtain the license plate numbers. <br>
+		There are many different implementations of both image segmentation as well as
+	optical character recognition. As a result, we want to experiment with the
+	different implementations and see which combinations result in accurate
+	representations.
+</p>
 
-<br><br>
+<br>
 <!-- Results -->
 <h3>Experiments and results</h3>
-One requirement for this project is to collect a dataset. We can leverage 
-<a href='https://platerecognizer.com/number-plate-datasets/'>this dataset</a>,
-which is a collection of license plates. We will focus on US license plates.
 
-Because there is not a large dataset with textual annotations for license plates
-available, we will have a small test set that we can grade by inspection -
-hand-annotated OCR. Each instance will be marked as a binary correct or
-incorrect, depending on whether it was detected or not. Additionally, there may
-be penalties for marking a region as a license plate if there does not exist
-one. As a consequence of a small test set, classification accuracy will not be
-precise, but will give a good idea of which methods work better than others.
+<p>
+		One requirement for this project is to collect a dataset. We can leverage 
+	<a href='https://platerecognizer.com/number-plate-datasets/'>this dataset</a>,
+	which is a collection of license plates. We will focus on US license plates.<br> Because there is not a large dataset with textual annotations for license plates
+	available, we will have a small test set that we can grade by inspection -
+	hand-annotated OCR. Each instance will be marked as a binary correct or
+	incorrect, depending on whether it was detected or not. Additionally, there may
+	be penalties for marking a region as a license plate if there does not exist
+	one. As a consequence of a small test set, classification accuracy will not be
+	precise, but will give a good idea of which methods work better than others.<br>
+</p>
+<p>
+		We will try multiple different image segmentation methods. Some will include
+	in-class methods such as edge detection or texture-based detection. We will also
+	leverage other methods including convolutional neural nets. Some models we will
+	experiment with are <a href='https://arxiv.org/abs/1506.02640'>YOLO</a> and
+	<a href='https://arxiv.org/abs/1506.01497'>Faster RCNN</a>. <br>
+</p>
+<p>
+		As for OCR, we will use <a
+	href='https://github.com/openalpr/openalpr'>OpenALPR</a>. This is an API that
+	performs OCR on images to detect and digitalize license plate numbers. By
+	passing regions of interest into the API, we should be able to extract the
+	license plate numbers for each instance. Alternatively, we could use a simpler,
+	more basic OCR such as <a
+	href='https://arxiv.org/abs/1506.02640'>pytesseract</a> and see how performance
+	differs - if at all.
+	<br>
+</p>
+<p>
+		For our machine learning image segmentaton, we will tend to use pre-trained models. The
+	reason for this is that we do not have access to a particularly large dataset.
+	However, in the case that we do train our own models, we will reserve 100 images
+	for the test set, while all other images will be used for training. These 100
+	images are held aside for hand-annotating and grading. <br>
+</p>
 <br>
 
-We will try multiple different image segmentation methods. Some will include
-in-class methods such as edge detection or texture-based detection. We will also
-leverage other methods including convolutional neural nets. Some models we will
-experiment with are <a href='https://arxiv.org/abs/1506.02640'>YOLO</a> and
-<a href='https://arxiv.org/abs/1506.01497'>Faster RCNN</a>. <br>
-
-As for OCR, we will use <a
-href='https://github.com/openalpr/openalpr'>OpenALPR</a>. This is an API that
-performs OCR on images to detect and digitalize license plate numbers. By
-passing regions of interest into the API, we should be able to extract the
-license plate numbers for each instance. Alternatively, we could use a simpler,
-more basic OCR such as <a
-href='https://arxiv.org/abs/1506.02640'>pytesseract</a> and see how performance
-differs - if at all.
+<h3>Midterm Update (Made it as an independent section for easier review)</h3>
+<p>
+	<b>10/31/2019 Update:</b> Currently we have built a working pipeline that reads in sample images and output recognized license plates. The mainframework of our project is complete, but we still need to try different methods to improve accuracy and introduce a bigger dataset.<br>
+</p>
+<p>
+	We divide our work into two parts, the first part is image segmentation and the second part is OCR. The first part performs image segmentation on the image, and output corresponding segments, based on the methods we choose. After saving segments to a temporary directory, We pass these segments into an OCR model in order to retrieve license plate tag information.
 <br>
+</p>
+<p>
+	For the first part, we have utilized a k-means clustering algorithm[1] and a graph cut algorithm with GMM and min cut[2] to segment the image (the methods we have learned in lectures). See sample outputs for k-means below (right click and open the image in new tab to see the picture): 
+</p>
 
-For our machine learning image segmentaton, we will tend to use pre-trained models. The
-reason for this is that we do not have access to a particularly large dataset.
-However, in the case that we do train our own models, we will reserve 100 images
-for the test set, while all other images will be used for training. These 100
-images are held aside for hand-annotating and grading. <br>
-
-<h3>Midterm Update</h3>
-We have a working pipeline that allows us to perform image segmentation on the
-image, and output corresponding segments. We are able to pass these segments
-into an OCR model in order to retrieve license plate tags.
 <br>
-In our first implementations, we have a k-means algorithm to segment the image.
-See example images on the bottom. We are also using the OpenALPR API to extract
-the plates from the image segments.
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/phillycar.png">
+</div>
+<div  style="text-align: center;"><b>Original Sample Image: <a href='https://whyy.org/articles/illegal-parkers-beware-philadelphia-wants-you-out-of-the-crosswalk-and-off-the-sidewalk/'> Philly Car </a></b></div>
+<br>
 <br> <br>
 <div class='row' style="text-align: center;">
 <img style="width: 225px;" alt="" src="res/kmeans/center 0.png">
@@ -133,21 +164,58 @@ the plates from the image segments.
 <img style="width: 225px;" alt="" src="res/kmeans/center 6.png">
 <img style="width: 225px;" alt="" src="res/kmeans/center 8.png">
 </div>
-<br>
-One problem is that we have not filtered out segments that are not license
-plates, so passing these into the OCR algorithm will either yield no results or
-jumbled results. So our immediate next steps are to find a way to determine
-whether a segment is a license plate or not.
-<br>
-In the future, we plan to experiment with more segmentation algorithms including
-edge detection with a Hough transform or convolutional neural networks like
-Faster-RCNN. We also want to research more OCR algorithms. In addition, being
-able to use confidence for both plate detection and plate OCR would allow us to
-give a confidence for a final result of a license plate.
-<br>
-Our work is included in this <a
-    href='https://github.com/shuyteng/CS6476-Project'>Github Repo</a>.
+<div  style="text-align: center;"><b>K-means clustering segmentation results</b></div>
 
+<br>
+<p>
+	At first glance one could see this is potentially a good result for extracting image segments, because we can differentiate plate information. Also, since plate numbers are usually written in one consistent color, k-means can definitely be a way to approach the problem. However, k-means clustering heavily relies on the initial points that we choose. Even with the same cluster number (k=15 in the example above), each run can render different segmentation results. In some runs, the plate information is well decomposed and we cannot read it in any segments. Another problem with k-means clustering, due to how it works, is that we cannot filter out segments that are not license plates, so passing these into the OCR algorithm will either yield no results or jumbled results. <br>
+</p>
+<p>
+	Another algorithm we tried for image segmentation is graph cut using GMM combined with min cut. See sample outputs below. The advantage of graph cut is that it can filter out segments without plates, so that the input image passed to OCR part is guaranteed to have plate information and thus not wasting running time. But this method, too, has its limitations. To use this algorithm, we have to manually select a rectangle area that contains useful information, i.e., foreground object. If algorithm doesn't filter out the plate, we can further provide a "mask" that highlights foreground objects and mask background objects. This method works well when we have only a handful of images to process. When we wanted to provide a bigger dataset for neural network models, it becomes tedious labor work. 
+	<br><br>
+</p>
+
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/graphcut/rect_seg_philly.jpg">
+</div>
+
+<div  style="text-align: center;"><b>Graph cut segmentation result, using only rectangle area selection </b></div>
+<br>
+
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/graphcut/mask_seg_philly.jpg">
+</div>
+
+<div  style="text-align: center;"><b>SGraph cut segmentation result, using mask selection, specifically including plate area </b></div>
+<br>
+
+
+<br> <br>
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/amsterdam.jpg">
+</div>
+<div  style="text-align: center;"><b>Original Sample Image: <a href='https://www.amsterdam.nl/en/parking/on-street-parking/'> Amsterdam Car  </a></b></div>
+<br>
+
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/graphcut/rect_seg_ams.jpg">
+</div>
+
+<div  style="text-align: center;"><b>Segmented (Extracted) image result, using only rectangle area selection</b></div>
+<br>
+
+<p>
+	We are also using the OpenALPR API to extract the plates from the image segments. Right now the system is able to recognize plates from sample image segments. Note that if we decide to pass in just the segmented images for OCR, we may want to use a more general purpose OCR. 
+</p>
+<p>
+	Our immediate next step is to find a way to determine  whether a segment is a license plate or not, as currently k-means clustering seems to be a better approach than graph cut. In the future, we plan to experiment with more segmentation algorithms including edge detection with a Hough transform or convolutional neural networks like Faster-RCNN. We also want to research more OCR algorithms. In addition, being able to use confidence for both plate detection and plate OCR would allow us to give a confidence level for the final result of a license plate.
+</p>
+<br>
+	
+<p>
+	Our work is included in this <a
+    href='https://github.com/shuyteng/CS6476-Project'>Github Repo</a>.
+</p>
 <!--
 Provide details about the experimental set up (number of images/videos, number
 of datasets you experimented with, train/test split if you used machine learning
@@ -162,14 +230,19 @@ see in your results, and explain why these trends make sense. Are the results as
 expected? Why?
 -->
 
+
 <br><br>
-<!-- Appendix -->
-<h3>Appendix</h3>
-<a href='https://arxiv.org/abs/1506.01497'>Faster RCNN</a> <br>
-<a href='https://github.com/openalpr/openalpr'>OpenALPR</a> <br>
-<a href='https://platerecognizer.com/number-plate-datasets/'>Plate Recognizer Dataset</a> <br>
-<a href='https://arxiv.org/abs/1506.02640'>pytesseract</a>
-<a href='https://arxiv.org/abs/1506.02640'>YOLO</a> <br>
+<!-- References -->
+<h3>References</h3>
+1. <a href='https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_grabcut/py_grabcut.html'> Interactive Foreground Extraction using GrabCut Algorithm </a> <br>
+2. <a href='https://towardsdatascience.com/introduction-to-image-segmentation-with-k-means-clustering-83fd0a9e2fc3'> Introduction to Image Segmentation with K-Means clustering </a> <br>
+3. <a href='https://www.openalpr.com/cloud-api.html'> OpenALPR Cloud API </a><br>
+4. <a href='https://arxiv.org/abs/1506.01497'>Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a> <br>
+5. <a href='https://platerecognizer.com/number-plate-datasets/'>Number Plate Datasets</a> <br>
+6. <a href='https://arxiv.org/abs/1506.02640'>You Only Look Once: Unified, Real-Time Object Detection</a><br>
+
+<br><br>
+
 </div>
 </div>
 
