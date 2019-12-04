@@ -26,9 +26,9 @@ class OpenALPRReader(PlateReader):
             with open(outpath, 'w') as f:
                 f.write(dump)
 
-        return self._process_json(r.json())
+        return self.process_json(r.json())
 
-    def _process_json(self, dump):
+    def process_json(self, dump):
         if not dump['results']:
             return None, 0.
 

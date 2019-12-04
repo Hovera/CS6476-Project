@@ -17,7 +17,10 @@ def process_image(imgpath, outdir):
             imgpath, os.path.join(outdir, basename + '.json'))
 
 def process_directory(indir, outdir):
-    for imgpath in glob.glob(os.path.join(indir, '*.png')):
+    imgpaths = []
+    for extension in ('*.png', '*.jpg'):
+        imgpaths.extend(glob.glob(os.path.join(indir, extension)))
+    for imgpath in imgpaths:
         process_image(imgpath, outdir)
 
 
