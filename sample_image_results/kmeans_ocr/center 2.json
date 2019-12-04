@@ -1,0 +1,359 @@
+{
+  "uuid": "",
+  "data_type": "alpr_results",
+  "epoch_time": 1572561415395,
+  "processing_time": {
+    "total": 145.00899997074157,
+    "plates": 68.6532974243164,
+    "vehicles": 63.24099999619648
+  },
+  "img_height": 826,
+  "img_width": 1466,
+  "results": [
+    {
+      "plate": "JTX2700",
+      "confidence": 75.0707015991211,
+      "region_confidence": 47,
+      "vehicle_region": {
+        "y": 327,
+        "x": 575,
+        "height": 499,
+        "width": 499
+      },
+      "region": "az",
+      "plate_index": 0,
+      "processing_time_ms": 19.6541748046875,
+      "candidates": [
+        {
+          "matches_template": 1,
+          "plate": "JTX2700",
+          "confidence": 75.0707015991211
+        },
+        {
+          "matches_template": 0,
+          "plate": "JX2700",
+          "confidence": 67.1891860961914
+        },
+        {
+          "matches_template": 1,
+          "plate": "JTX2706",
+          "confidence": 66.89114379882812
+        },
+        {
+          "matches_template": 0,
+          "plate": "JTX270",
+          "confidence": 66.81295013427734
+        },
+        {
+          "matches_template": 1,
+          "plate": "JDX2700",
+          "confidence": 66.43537902832031
+        },
+        {
+          "matches_template": 1,
+          "plate": "JTX2708",
+          "confidence": 66.40386962890625
+        },
+        {
+          "matches_template": 1,
+          "plate": "JRX2700",
+          "confidence": 66.01607513427734
+        },
+        {
+          "matches_template": 1,
+          "plate": "JPX2700",
+          "confidence": 65.94662475585938
+        },
+        {
+          "matches_template": 1,
+          "plate": "JYX2700",
+          "confidence": 65.76295471191406
+        },
+        {
+          "matches_template": 1,
+          "plate": "JTX2703",
+          "confidence": 65.72113037109375
+        }
+      ],
+      "coordinates": [
+        {
+          "y": 685,
+          "x": 755
+        },
+        {
+          "y": 689,
+          "x": 898
+        },
+        {
+          "y": 747,
+          "x": 894
+        },
+        {
+          "y": 743,
+          "x": 752
+        }
+      ],
+      "vehicle": {
+        "orientation": [
+          {
+            "confidence": 98.30469512939453,
+            "name": "0"
+          },
+          {
+            "confidence": 1.5015385150909424,
+            "name": "180"
+          },
+          {
+            "confidence": 0.05057563632726669,
+            "name": "225"
+          },
+          {
+            "confidence": 0.04228556156158447,
+            "name": "45"
+          },
+          {
+            "confidence": 0.04047572985291481,
+            "name": "90"
+          },
+          {
+            "confidence": 0.03227854147553444,
+            "name": "315"
+          },
+          {
+            "confidence": 0.014429651200771332,
+            "name": "270"
+          },
+          {
+            "confidence": 0.011432158760726452,
+            "name": "135"
+          },
+          {
+            "confidence": 0.0022987343836575747,
+            "name": "missing"
+          }
+        ],
+        "color": [
+          {
+            "confidence": 73.25736999511719,
+            "name": "black"
+          },
+          {
+            "confidence": 19.124528884887695,
+            "name": "white"
+          },
+          {
+            "confidence": 2.6924188137054443,
+            "name": "blue"
+          },
+          {
+            "confidence": 2.1278703212738037,
+            "name": "silver-gray"
+          },
+          {
+            "confidence": 0.7595779299736023,
+            "name": "gold-beige"
+          },
+          {
+            "confidence": 0.7258191108703613,
+            "name": "brown"
+          },
+          {
+            "confidence": 0.5078371167182922,
+            "name": "green"
+          },
+          {
+            "confidence": 0.49349671602249146,
+            "name": "red"
+          },
+          {
+            "confidence": 0.22970081865787506,
+            "name": "yellow"
+          },
+          {
+            "confidence": 0.03975283354520798,
+            "name": "purple"
+          }
+        ],
+        "make": [
+          {
+            "confidence": 58.09150314331055,
+            "name": "ford"
+          },
+          {
+            "confidence": 9.307080268859863,
+            "name": "suzuki"
+          },
+          {
+            "confidence": 8.002934455871582,
+            "name": "mazda"
+          },
+          {
+            "confidence": 6.375617504119873,
+            "name": "volkswagen"
+          },
+          {
+            "confidence": 3.55334210395813,
+            "name": "toyota"
+          },
+          {
+            "confidence": 2.895373821258545,
+            "name": "hyundai"
+          },
+          {
+            "confidence": 2.88629412651062,
+            "name": "chevrolet"
+          },
+          {
+            "confidence": 2.618281841278076,
+            "name": "peugeot"
+          },
+          {
+            "confidence": 1.2545585632324219,
+            "name": "volvo"
+          },
+          {
+            "confidence": 0.6359637379646301,
+            "name": "chrysler"
+          }
+        ],
+        "body_type": [
+          {
+            "confidence": 58.986507415771484,
+            "name": "sedan-standard"
+          },
+          {
+            "confidence": 16.66693878173828,
+            "name": "sedan-compact"
+          },
+          {
+            "confidence": 13.85507583618164,
+            "name": "suv-crossover"
+          },
+          {
+            "confidence": 6.962259769439697,
+            "name": "van-mini"
+          },
+          {
+            "confidence": 2.9292752742767334,
+            "name": "sedan-wagon"
+          },
+          {
+            "confidence": 0.2968478202819824,
+            "name": "tractor-trailer"
+          },
+          {
+            "confidence": 0.179128959774971,
+            "name": "sedan-sports"
+          },
+          {
+            "confidence": 0.04613317921757698,
+            "name": "motorcycle"
+          },
+          {
+            "confidence": 0.044543422758579254,
+            "name": "van-full"
+          },
+          {
+            "confidence": 0.017872940748929977,
+            "name": "sedan-convertible"
+          }
+        ],
+        "year": [
+          {
+            "confidence": 51.18898010253906,
+            "name": "2010-2014"
+          },
+          {
+            "confidence": 48.728271484375,
+            "name": "2015-2019"
+          },
+          {
+            "confidence": 0.08251902461051941,
+            "name": "2005-2009"
+          },
+          {
+            "confidence": 0.00017844824469648302,
+            "name": "2000-2004"
+          },
+          {
+            "confidence": 2.057034544122871e-05,
+            "name": "1995-1999"
+          },
+          {
+            "confidence": 1.2737410543195438e-05,
+            "name": "1990-1994"
+          },
+          {
+            "confidence": 1.2454837815312203e-05,
+            "name": "1980-1984"
+          },
+          {
+            "confidence": 5.257169505057391e-06,
+            "name": "1985-1989"
+          },
+          {
+            "confidence": 3.0790922664891696e-06,
+            "name": "missing"
+          }
+        ],
+        "make_model": [
+          {
+            "confidence": 12.951728820800781,
+            "name": "ford_edge"
+          },
+          {
+            "confidence": 12.111079216003418,
+            "name": "peugeot_208"
+          },
+          {
+            "confidence": 6.6576828956604,
+            "name": "suzuki_swift"
+          },
+          {
+            "confidence": 4.021007061004639,
+            "name": "honda_insight"
+          },
+          {
+            "confidence": 3.8949642181396484,
+            "name": "ford_focus"
+          },
+          {
+            "confidence": 3.350018262863159,
+            "name": "mazda_mazda5"
+          },
+          {
+            "confidence": 2.2233831882476807,
+            "name": "chrysler_pacifica"
+          },
+          {
+            "confidence": 1.9939647912979126,
+            "name": "chevrolet_volt"
+          },
+          {
+            "confidence": 1.9474191665649414,
+            "name": "ford_fiesta"
+          },
+          {
+            "confidence": 1.8503010272979736,
+            "name": "ford_fusion"
+          }
+        ]
+      },
+      "matches_template": 1,
+      "requested_topn": 10
+    }
+  ],
+  "credits_monthly_used": 15,
+  "version": 2,
+  "credits_monthly_total": 1000,
+  "error": false,
+  "regions_of_interest": [
+    {
+      "y": 0,
+      "x": 0,
+      "height": 826,
+      "width": 1466
+    }
+  ],
+  "credit_cost": 1
+}
