@@ -3,7 +3,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>Computer Vision Class Project
-  | ECE, Virginia Tech | Fall 2015: ECE 5554/4984</title>
+  | CS Georgia Tech | Fall 2019: CS 6476</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -38,15 +38,15 @@ p{
 <div class="page-header">
 
 <!-- Title and Name --> 
-<h1>Specialized OCR on Detecting Car Plates (Final Update 12/03/2019)</h1> 
+<h1>Specialized OCR on Detecting Car Plates (Proposal)</h1> 
 <span style="font-size: 20px; line-height: 1.5em;"><strong>Jesse Huang
         (jhuang347), Shuyi Teng (steng6)</strong></span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Fall 2019 Computer Vision: Class Project</span><br>
 <span style="font-size: 18px; line-height: 1.5em;">Georgia Tech</span><br>
 <span style="font-size: 18px; line-height: 1.5em;">
     <a href='https://github.com/shuyteng/CS6476-Project'>Github Repo</a><br>
-    <a href='update_1.html'>Midterm Update</a><br>
-    <a href='proposal.html'>Original Proposal</a><br></span>
+    <a href='index.html'>Final Update (Main Page)</a><br>
+    <a href='update_1.html'>Midterm Update</a><br></span>
 <hr>
 
 
@@ -78,6 +78,10 @@ p{
 	<img style="height: 325px;" alt="" src="teaser.png">
 	</div>
 	<br>
+<p>
+
+</p>
+
 
 <br><br>
 <!-- Approach -->
@@ -85,11 +89,8 @@ p{
 <p>
 		Our approach is unique in the fact that we will combine different strategies to
 	only extract information from license plates. This will lead to an application
-	that can be used in more generalized models.</p>
-
-<p>We divide our work into two parts, the first part is image segmentation and the second part is OCR. The first part performs image segmentation on the image, and output corresponding segments, based on the methods we choose. After saving segments to a temporary directory, We pass these segments into an OCR model in order to retrieve license plate tag information.<br></p>
-
-<p>		The first part to this specialized OCR is to separate the regions of the image
+	that can be used in more generalized models.
+		The first part to this specialized OCR is to separate the regions of the image
 	that are of interest. This is accomplished using image segmentation. After
 	identifying regions of interest, we can perform optical character recognition on
 	these regions in order to obtain the license plate numbers. <br>
@@ -97,80 +98,13 @@ p{
 	optical character recognition. As a result, we want to experiment with the
 	different implementations and see which combinations result in accurate
 	representations.
-</p></p>
+</p>
 
 <br>
 <!-- Results -->
 <h3>Experiments and results</h3>
 
 <p>
-
-	Currently we have built a working pipeline that reads in sample images and output recognized license plates. The mainframework of our project is complete, but we still need to try different methods to improve accuracy and introduce a bigger dataset.
-	</p>
-<p>
-	For the first part, we have utilized a k-means clustering algorithm[1] and a graph cut algorithm with GMM and min cut[2] to segment the image (the methods we have learned in lectures). See sample outputs for k-means below (right click and open the image in new tab to see the picture): 
-</p>
-
-<br>
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/phillycar.png">
-</div>
-<div  style="text-align: center;"><b>Original Sample Image: <a href='https://whyy.org/articles/illegal-parkers-beware-philadelphia-wants-you-out-of-the-crosswalk-and-off-the-sidewalk/'> Philly Car </a></b></div>
-<br>
-<br> <br>
-<div class='row' style="text-align: center;">
-<img style="width: 225px;" alt="" src="res/kmeans/center 0.png">
-<img style="width: 225px;" alt="" src="res/kmeans/center 2.png">
-<img style="width: 225px;" alt="" src="res/kmeans/center 4.png">
-<img style="width: 225px;" alt="" src="res/kmeans/center 6.png">
-<img style="width: 225px;" alt="" src="res/kmeans/center 8.png">
-</div>
-<div  style="text-align: center;"><b>K-means clustering segmentation results</b></div>
-
-<br>
-<p>
-	At first glance one could see this is potentially a good result for extracting image segments, because we can differentiate plate information. Also, since plate numbers are usually written in one consistent color, k-means can definitely be a way to approach the problem. However, k-means clustering heavily relies on the initial points that we choose. Even with the same cluster number (k=15 in the example above), each run can render different segmentation results. In some runs, the plate information is well decomposed and we cannot read it in any segments. Another problem with k-means clustering, due to how it works, is that we cannot filter out segments that are not license plates, so passing these into the OCR algorithm will either yield no results or jumbled results. <br>
-</p>
-<p>
-	Another algorithm we tried for image segmentation is graph cut using GMM combined with min cut. See sample outputs below. The advantage of graph cut is that it can filter out segments without plates, so that the input image passed to OCR part is guaranteed to have plate information and thus not wasting running time. But this method, too, has its limitations. To use this algorithm, we have to manually select a rectangle area that contains useful information, i.e., foreground object. If algorithm doesn't filter out the plate, we can further provide a "mask" that highlights foreground objects and mask background objects. This method works well when we have only a handful of images to process. When we wanted to provide a bigger dataset for neural network models, it becomes tedious labor work. 
-	<br><br>
-</p>
-
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/graphcut/rect_seg_philly.jpg">
-</div>
-
-<div  style="text-align: center;"><b>Graph cut segmentation result, using only rectangle area selection </b></div>
-<br>
-
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/graphcut/mask_seg_philly.jpg">
-</div>
-
-<div  style="text-align: center;"><b>SGraph cut segmentation result, using mask selection, specifically including plate area </b></div>
-<br>
-
-
-<br> <br>
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/amsterdam.jpg">
-</div>
-<div  style="text-align: center;"><b>Original Sample Image: <a href='https://www.amsterdam.nl/en/parking/on-street-parking/'> Amsterdam Car  </a></b></div>
-<br>
-
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/graphcut/rect_seg_ams.jpg">
-</div>
-
-<div  style="text-align: center;"><b>Segmented (Extracted) image result, using only rectangle area selection</b></div>
-<br>
-
-<p>
-	We are also using the OpenALPR API to extract the plates from the image segments. Right now the system is able to recognize plates from sample image segments. Note that if we decide to pass in just the segmented images for OCR, we may want to use a more general purpose OCR. 
-</p>
-
-##
-
 		One requirement for this project is to collect a dataset. We can leverage 
 	<a href='https://platerecognizer.com/number-plate-datasets/'>this dataset</a>,
 	which is a collection of license plates. We will focus on US license plates.<br> Because there is not a large dataset with textual annotations for license plates
@@ -208,19 +142,7 @@ p{
 </p>
 <br>
 
-<h3>Qualitative Results</h3>
-<br>
 
-<h3>Future Work</h3>
-<p>
-	Our immediate next step is to find a way to determine  whether a segment is a license plate or not, as currently k-means clustering seems to be a better approach than graph cut. In the future, we plan to experiment with more segmentation algorithms including edge detection with a Hough transform or convolutional neural networks like Faster-RCNN. We also want to research more OCR algorithms. In addition, being able to use confidence for both plate detection and plate OCR would allow us to give a confidence level for the final result of a license plate.
-</p>
-<br>
-	
-<p>
-	Our work is included in this <a
-    href='https://github.com/shuyteng/CS6476-Project'>Github Repo</a>.
-</p>
 <!--
 Provide details about the experimental set up (number of images/videos, number
 of datasets you experimented with, train/test split if you used machine learning
@@ -234,9 +156,7 @@ varies as you change those parameter values. Be sure to discuss any trends you
 see in your results, and explain why these trends make sense. Are the results as
 expected? Why?
 -->
-
-
-<br><br>
+<br>
 <!-- References -->
 <h3>References</h3>
 1. <a href='https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_grabcut/py_grabcut.html'> Interactive Foreground Extraction using GrabCut Algorithm </a> <br>
