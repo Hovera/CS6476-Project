@@ -25,11 +25,10 @@ def compare_results(pred_dir, truth_dir):
         predictions = process_json(pred_path)
         truths = process_truth(truth_path)
 
-        for pred, truth in zip(predictions, truths):
+        
+        for plate in truths:
             total += 1
-            pred_plate, _ = pred
-
-            if truth == pred_plate:
+            if plate in predictions:
                 correct += 1
 
     return correct / total, correct, total
@@ -45,7 +44,7 @@ def process_truth(filename):
             results.append(plate)
             line = f.readline().strip()
 
-    return results
+    return set(results)
 
 
 def process_json(filename):
@@ -55,10 +54,10 @@ def process_json(filename):
     results = []
     for r in data['results']:
         plate = r['plate']
-        confidence = r['confidence']
-        results.append((plate, confidence))
+        # confidence = r['confidence']
+        results.append(plate)
     
-    return results
+    return set(results)
 
 
 if __name__ == '__main__':
