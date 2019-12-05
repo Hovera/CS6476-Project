@@ -170,7 +170,7 @@ p{
 <p>
 
 		One requirement for this project is to collect a dataset. We can leverage the OpenALPR benchmark found <a href='https://platerecognizer.com/number-plate-datasets/'>here</a>,
-	which is a collection of license plates. We will focus on US license plates. This dataset includes 111 examples of cars and annotations for license plates, so we can easily utilize this dataset to calculate accuracy for a large number of images. To calculate accuracy, we chose to take the number of matching predicted and ground truth annotations and divide that by the number of ground truth annotations and any additional false positives. This would penalize the algorithm for detecting text that is not part of a license plate. More specific techniques to count matching or not matching annotations are included in their respective headings.
+	which is a collection of license plates. We will focus on US license plates. This dataset includes 222 examples of cars and annotations for license plates, so we can easily utilize this dataset to calculate accuracy for a large number of images. To calculate accuracy, we chose to take the number of matching predicted and ground truth annotations and divide that by the number of ground truth annotations and any additional false positives. This would penalize the algorithm for detecting text that is not part of a license plate. More specific techniques to count matching or not matching annotations are included in their respective headings.
 </p>
 <br>
 
@@ -186,7 +186,7 @@ p{
 </div>
 <br><br>
 <p>
-	We ran this method on all 111 samples and it took about 45 minutes in total to process. The accuracy is about 92.6%, if we use the formula: Correctly Recognized Character / Total Character. See the more detailed accuracy in the following section. 
+	We ran this method on all 222 samples and it took about 45 minutes in total to process. The accuracy is about 92.6%, if we use the formula: Correctly Recognized Character / Total Character. See the more detailed accuracy in the following section. 
 </p>
 <p>Here is a good example: </p>
 
@@ -242,7 +242,7 @@ p{
 	We further implemented another package called LPEX. It is a system using different image processing tools to extract the plate area. The result will be small images of plates. It uses morphological methods like Top Hat and Black Hat to enhance the image, Gaussian blur with threshold to extract contours and then check each coutour to decide if it looks like a character. If such characters are found, the sustem futher checks if they all occur within a small region (change in area should be samll) and if they are long enough to be plate numbers.
 	Given a list of such characters' positions, we can generate a rectangle around them and cut the image based on the rectangle's coordinates. 
 
-	This method successfully extracted 64 out of 111 images, which is around 57.7%. The extracted image are very accurate in capturing the location of the plate.<br>
+	This method successfully extracted 128 out of 222 images, which is around 57.7%. The extracted image are very accurate in capturing the location of the plate.<br>
 </p>
 
 <div class='row' style="text-align: center;">
@@ -254,7 +254,7 @@ p{
 <br><br>
 
 <p>
-However, OCR didn't render good results, it is only able to recognize 7 out of 108 images, accuracy is only around 6.5%. Even though the images we put in are good examples of plates. The reason might be first, the input images are too small, given it is only a plate. Secondly, the OCR system we used probably did not expect the input image to be an extracted plate image. If it treats the plate images to be a normal image with cars, surroundings, then it is possible that the recognition rate is low.
+However, OCR didn't render good results, it is only able to recognize 14 out of 216 images, accuracy is only around 6.5%. Even though the images we put in are good examples of plates. The reason might be first, the input images are too small, given it is only a plate. Secondly, the OCR system we used probably did not expect the input image to be an extracted plate image. If it treats the plate images to be a normal image with cars, surroundings, then it is possible that the recognition rate is low.
 </p>
 <p>
 	For example, the OCR is able to recognize the plate number in the upper image, but not the one down.
@@ -273,22 +273,22 @@ However, OCR didn't render good results, it is only able to recognize 7 out of 1
 <h4>
     Pure OCR
 </h4>
-Accuracy: 102/111 = 91.9% <br>
+Accuracy: 204/222 = 91.9% <br>
 False Positives: 0 <br>
-False Negatives: 9/111 = 8.1% (Plates that were not detected/recognized)<br>
+False Negatives: 18/222 = 8.1% (Plates that were not detected/recognized)<br>
 <h4>
     K-Means Approach
 </h4>
-Accuracy: 146/313 = 46.65% <br>
-False Postives: 91/313 = 29.1% (Plates detected that were not actually plates)<br>
-False Negatives: 76/313 = 24.28% (Plates that were not detected/recognized)<br>
+Accuracy: 292/626 = 46.65% <br>
+False Postives: 182/626 = 29.1% (Plates detected that were not actually plates)<br>
+False Negatives: 152/626 = 24.28% (Plates that were not detected/recognized)<br>
 Character by Character Accuracy: 92.6%<br>
 
 <h4>
     LPEX Approach
 </h4>
-Accuracy: 7/108 = 6.48% <br>
-Car Plate Detection Rate: 64/111 = 57.7%
+Accuracy: 14/216 = 6.48% <br>
+Car Plate Detection Rate: 128/222 = 57.7%
 <br><br>
 
 
