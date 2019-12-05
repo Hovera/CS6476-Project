@@ -137,7 +137,9 @@ p{
             the license plates. Recently, neural networks have been growing in
             popularity, and especially convolutional neural networks in the
             domain of computer vision. We choose to use the Faster RCNN to
-            segment the images with pre-trained weights.
+            segment the images with pre-trained weights. The reason we use
+            pre-trained weights is because we do not have a dataset large enough
+            to cover a significant test and train set.
         </li>
     </ul>
     </p>
@@ -183,14 +185,31 @@ p{
     calculate accuracy, we chose to take the number of matching predicted and
     ground truth annotations and divide that by the number of ground truth
     annotations and any additional false positives. This would penalize the
-    algorithm for detecting text that is not part of a license plate.
+    algorithm for detecting text that is not part of a license plate. More
+    specific techniques to count matching or not matching annotations are
+    included in their respective headings.
 </p>
+<br>
 
-<!-- Final Currently Here -->
+<h3>Qualitative Results</h3>
+<h4>
+    Pure OCR
+</h4>
+Accuracy: 204/222
+False Positives: 0
+False Negatives: 222 - 204 = 18 plates that were not detected/recognized
+<h4>
+    K-Means Approach
+</h4>
+Accuracy: 146/313.
+False Postives: 313 - 222 = 91 Plates detected that were not actually plates
+False Negatives: 222 - 146 = 76 plates that were not detected/recognized
 
-<p>
-	For the first part, we have utilized a k-means clustering algorithm[1] and a graph cut algorithm with GMM and min cut[2] to segment the image (the methods we have learned in lectures). See sample outputs for k-means below (right click and open the image in new tab to see the picture): 
-</p>
+<h4>
+    Graph Cut
+</h4>
+No results?
+
 
 <br>
 <div class='row' style="text-align: center;">
@@ -212,6 +231,10 @@ p{
 <p>
 	At first glance one could see this is potentially a good result for extracting image segments, because we can differentiate plate information. Also, since plate numbers are usually written in one consistent color, k-means can definitely be a way to approach the problem. However, k-means clustering heavily relies on the initial points that we choose. Even with the same cluster number (k=15 in the example above), each run can render different segmentation results. In some runs, the plate information is well decomposed and we cannot read it in any segments. Another problem with k-means clustering, due to how it works, is that we cannot filter out segments that are not license plates, so passing these into the OCR algorithm will either yield no results or jumbled results. <br>
 </p>
+
+<h4>
+    Graph Cut
+</h4>
 <p>
 	Another algorithm we tried for image segmentation is graph cut using GMM combined with min cut. See sample outputs below. The advantage of graph cut is that it can filter out segments without plates, so that the input image passed to OCR part is guaranteed to have plate information and thus not wasting running time. But this method, too, has its limitations. To use this algorithm, we have to manually select a rectangle area that contains useful information, i.e., foreground object. If algorithm doesn't filter out the plate, we can further provide a "mask" that highlights foreground objects and mask background objects. This method works well when we have only a handful of images to process. When we wanted to provide a bigger dataset for neural network models, it becomes tedious labor work. 
 	<br><br>
@@ -246,41 +269,22 @@ p{
 <div  style="text-align: center;"><b>Segmented (Extracted) image result, using only rectangle area selection</b></div>
 <br>
 
-<p>
-	We are also using the OpenALPR API to extract the plates from the image segments. Right now the system is able to recognize plates from sample image segments. Note that if we decide to pass in just the segmented images for OCR, we may want to use a more general purpose OCR. 
-		We will try multiple different image segmentation methods. Some will include
-	in-class methods such as edge detection or texture-based detection. We will also
-	leverage other methods including convolutional neural nets. Some models we will
-	experiment with are <a href='https://arxiv.org/abs/1506.02640'>YOLO</a> and
-	<a href='https://arxiv.org/abs/1506.01497'>Faster RCNN</a>. <br>
-</p>
-<p>
-		As for OCR, we will use <a
-	href='https://github.com/openalpr/openalpr'>OpenALPR</a>. This is an API that
-	performs OCR on images to detect and digitalize license plate numbers. By
-	passing regions of interest into the API, we should be able to extract the
-	license plate numbers for each instance. Alternatively, we could use a simpler,
-	more basic OCR such as <a
-	href='https://arxiv.org/abs/1506.02640'>pytesseract</a> and see how performance
-	differs - if at all.
-	<br>
-</p>
-<p>
-		For our machine learning image segmentaton, we will tend to use pre-trained models. The
-	reason for this is that we do not have access to a particularly large dataset.
-	However, in the case that we do train our own models, we will reserve 100 images
-	for the test set, while all other images will be used for training. These 100
-	images are held aside for hand-annotating and grading. <br>
-</p>
-<br>
+<h3>Conclusion</h3>
+In conclusion...
 
-<h3>Qualitative Results</h3>
-<br>
-
-<h3>Future Work</h3>
-<p>
-	Our immediate next step is to find a way to determine  whether a segment is a license plate or not, as currently k-means clustering seems to be a better approach than graph cut. In the future, we plan to experiment with more segmentation algorithms including edge detection with a Hough transform or convolutional neural networks like Faster-RCNN. We also want to research more OCR algorithms. In addition, being able to use confidence for both plate detection and plate OCR would allow us to give a confidence level for the final result of a license plate.
-</p>
+<h3>Future Steps</h3>
+<ul>
+    <li>
+        Different OCR - more lightweight might make similar results?
+    </li>
+    <li>
+        For K-means and Graph Cut - maybe identifying segmented license plates
+    </li>
+    <li>
+        Using confidence (OCR and image segmentation) to generate a combined
+        confidence
+    </li>
+</ul>
 <br>
 	
 <p>

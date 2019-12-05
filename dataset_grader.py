@@ -68,18 +68,14 @@ def compare_results(pred_dir, truth_dir):
     results = []
     for base in basenames:
         truth_path = os.path.join(truth_dir, base + '.txt')
-        pred_paths = [os.path.join(pred_dir, base + f'_center_{x}.json') for x
-                in range(3)]
+        pred_path = os.path.join(pred_dir, base + '.json')
         if not os.path.exists(truth_path):
             continue
 
-        pred_exist = [not os.path.exists(p) for p in pred_paths]
-        if sum(pred_exist) > 0:
+        if not os.path.exists(pred_path):
             continue
 
-        predictions = set()
-        for pred_path in pred_paths:
-            predictions.update(process_json(pred_path))
+        predictions = process_json(pred_path)
         truths = process_truth(truth_path)
         
         for plate in truths:
@@ -140,7 +136,7 @@ if __name__ == '__main__':
         _, pred_dir, truth_dir, *_ = sys.argv
         accuracy, correct, total = compare_results_k(pred_dir, truth_dir)
     else:
-        accuracy, correct, total = compare_results_k('data/dataset_ocr',
+        accuracy, correct, total = compare_results('data/dataset_ocr',
                 'data/dataset')
     # see('data/kmeans_ocr')
     print(f'Accuracy: {accuracy} ({correct} / {total})')
