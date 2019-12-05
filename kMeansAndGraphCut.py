@@ -149,8 +149,10 @@ for file in glob.glob('dataset/*.jpg'):
 # select first 6 images
 # image_list = image_list[1:6]
 # file_name = file_name[1:6]
-
+# %%
 for i in range(0, len(image_list)):
+    print('Number', i, 'inline...')
     plate_detect = imageSegmentation(image_list[i], file_name[i])
     plate_detect.k_means(k=3)
+
 print('All Done')

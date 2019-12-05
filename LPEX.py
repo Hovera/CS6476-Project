@@ -1,4 +1,4 @@
-from TOOLS import Functions
+import Functions
 import cv2
 import numpy as np
 import math
@@ -6,16 +6,12 @@ import glob
 import os
 # %%
 
-
 def plateDetection(img, filename):
 
     try:
         os.mkdir('LPEX_results/')
     except FileExistsError:
         pass
-#    img = cv2.imread(image)
-    # cv2.imshow('original', img)
-    # cv2.imwrite(temp_folder + '1 - original.png', img)
 
     # hsv transform - value = gray image
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -31,24 +27,24 @@ def plateDetection(img, filename):
     blackHat = cv2.morphologyEx(value, cv2.MORPH_BLACKHAT, kernel)
     # cv2.imshow('topHat', topHat)
     # cv2.imshow('blackHat', blackHat)
-#    cv2.imwrite('1-topHat.png', topHat)
-#    cv2.imwrite('1-blackHat.png', blackHat)
+    # cv2.imwrite(temp_folder + '3 - topHat.png', topHat)
+    # cv2.imwrite(temp_folder + '4 - blackHat.png', blackHat)
 
     # add and subtract between morphological operations
     add = cv2.add(value, topHat)
     subtract = cv2.subtract(add, blackHat)
     # cv2.imshow('subtract', subtract)
-#    cv2.imwrite('2-subtract.png', subtract)
+    # cv2.imwrite(temp_folder + '5 - subtract.png', subtract)
 
     # applying gaussian blur on subtract image
     blur = cv2.GaussianBlur(subtract, (5, 5), 0)
     # cv2.imshow('blur', blur)
-#    cv2.imwrite('3-blur.png', blur)
+    # cv2.imwrite(temp_folder + '6 - blur.png', blur)
 
     # thresholding
     thresh = cv2.adaptiveThreshold(blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 19, 9)
     # cv2.imshow('thresh', thresh)
-#    cv2.imwrite('4-thresh.png', thresh)
+    # cv2.imwrite(temp_folder + '7 - thresh.png', thresh)
 
     # cv2.findCountours() function changed from OpenCV3 to OpenCV4: now it have only two parameters instead of 3
     cv2MajorVersion = cv2.__version__.split(".")[0]
@@ -83,7 +79,7 @@ def plateDetection(img, filename):
             possibleChars.append(possibleChar)
 
     # cv2.imshow("contours", imageContours)
-#    cv2.imwrite('5-imageContours.png', imageContours)
+    # cv2.imwrite(temp_folder + '8 - imageContours.png', imageContours)
 
     imageContours = np.zeros((height, width, 3), np.uint8)
 
@@ -96,7 +92,7 @@ def plateDetection(img, filename):
     # using values from ctrs to draw new contours
     cv2.drawContours(imageContours, ctrs, -1, (255, 255, 255))
     # cv2.imshow("contoursPossibleChars", imageContours)
-#    cv2.imwrite('6-contoursPossibleChars.png', imageContours)
+    # cv2.imwrite(temp_folder + '9 - contoursPossibleChars.png', imageContours)
 
     plates_list = []
     listOfListsOfMatchingChars = []
@@ -178,7 +174,7 @@ def plateDetection(img, filename):
         cv2.drawContours(imageContours, contours, -1, contoursColor)
 
     # cv2.imshow("finalContours", imageContours)
-#    cv2.imwrite('7-finalContours.png', imageContours)
+    # cv2.imwrite(temp_folder + '10 - finalContours.png', imageContours)
 
     for listOfMatchingChars in listOfListsOfMatchingChars:
         possiblePlate = Functions.PossiblePlate()
@@ -214,9 +210,7 @@ def plateDetection(img, filename):
         correctionAngleInDeg = correctionAngleInRad * (180.0 / math.pi)
 
         # pack plate region center point, width and height, and correction angle into rotated rect member variable of plate
-        possiblePlate.rrLocationOfPlateInScene = (
-                tuple(plateCenter), (
-                        plateHeight), correctionAngleInDeg)
+        possiblePlate.rrLocationOfPlateInScene = (tuple(plateCenter), (plateWidth, plateHeight), correctionAngleInDeg)
 
         # get the rotation matrix for our calculated correction angle
         rotationMatrix = cv2.getRotationMatrix2D(tuple(plateCenter), correctionAngleInDeg, 1.0)
@@ -227,8 +221,7 @@ def plateDetection(img, filename):
         imgRotated = cv2.warpAffine(img, rotationMatrix, (width, height))
 
         # crop the image/plate detected
-        imgCropped = cv2.getRectSubPix(imgRotated, (plateWidth, plateHeight),
-                                       tuple(plateCenter))
+        imgCropped = cv2.getRectSubPix(imgRotated, (plateWidth, plateHeight), tuple(plateCenter))
 
         # copy the cropped plate image into the applicable member variable of the possible plate
         possiblePlate.Plate = imgCropped
@@ -239,39 +232,30 @@ def plateDetection(img, filename):
 
         # draw a ROI on the original image
         for i in range(0, len(plates_list)):
-
-    #        print(plates_list[i])
             # finds the four vertices of a rotated rect - it is useful to draw the rectangle.
             p2fRectPoints = cv2.boxPoints(plates_list[i].rrLocationOfPlateInScene)
 
             # roi rectangle colour
             rectColour = (0, 255, 0)
 
-            cv2.line(imageContours, tuple(p2fRectPoints[0]),
-                     tuple(p2fRectPoints[1]), rectColour, 2)
-            cv2.line(imageContours, tuple(p2fRectPoints[1]),
-                     tuple(p2fRectPoints[2]), rectColour, 2)
-            cv2.line(imageContours, tuple(p2fRectPoints[2]),
-                     tuple(p2fRectPoints[3]), rectColour, 2)
-            cv2.line(imageContours, tuple(p2fRectPoints[3]),
-                     tuple(p2fRectPoints[0]), rectColour, 2)
+            cv2.line(imageContours, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), rectColour, 2)
+            cv2.line(imageContours, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), rectColour, 2)
+            cv2.line(imageContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), rectColour, 2)
+            cv2.line(imageContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), rectColour, 2)
 
-            cv2.line(img, tuple(p2fRectPoints[0]),
-                     tuple(p2fRectPoints[1]),rectColour, 2)
-            cv2.line(img, tuple(p2fRectPoints[1]),
-                     tuple(p2fRectPoints[2]), rectColour, 2)
-            cv2.line(img, tuple(p2fRectPoints[2]),
-                     tuple(p2fRectPoints[3]), rectColour, 2)
-            cv2.line(img, tuple(p2fRectPoints[3]),
-                     tuple(p2fRectPoints[0]), rectColour, 2)
+            cv2.line(img, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), rectColour, 2)
+            cv2.line(img, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), rectColour, 2)
+            cv2.line(img, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), rectColour, 2)
+            cv2.line(img, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), rectColour, 2)
 
             # cv2.imshow("detected", imageContours)
-#            cv2.imwrite('8-detected.png', imageContours)
+            # cv2.imwrite(temp_folder + '11 - detected.png', imageContours)
 
 #            cv2.imshow("detectedOriginal", img)
             # cv2.imwrite(temp_folder + '12 - detectedOriginal.png', img)
 
             # cv2.imshow("plate", plates_list[i].Plate)
+
             cv2.imwrite('LPEX_results/%s_%i.png' % (filename, i),
                         plates_list[i].Plate)
 
@@ -291,8 +275,8 @@ for file in glob.glob('dataset/*.jpg'):
     file_name.append(file)
 
 # select first 6 images
-#image_list = image_list[1:6]
-#file_name = file_name[1:6]
-# %%
+#image_list = image_list[1:2]
+#file_name = file_name[1:2]
+
 for i in range(0, len(image_list)):
     plateDetection(image_list[i], file_name[i])
