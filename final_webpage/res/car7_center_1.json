@@ -1,0 +1,359 @@
+{
+  "uuid": "",
+  "data_type": "alpr_results",
+  "epoch_time": 1575499135874,
+  "processing_time": {
+    "total": 142.68900000024587,
+    "plates": 64.0480728149414,
+    "vehicles": 67.38800000039191
+  },
+  "img_height": 850,
+  "img_width": 1280,
+  "results": [
+    {
+      "plate": "10DTM",
+      "confidence": 81.6326904296875,
+      "region_confidence": 56,
+      "vehicle_region": {
+        "y": 0,
+        "x": 291,
+        "height": 700,
+        "width": 700
+      },
+      "region": "nj",
+      "plate_index": 0,
+      "processing_time_ms": 18.772478103637695,
+      "candidates": [
+        {
+          "matches_template": 0,
+          "plate": "10DTM",
+          "confidence": 81.6326904296875
+        },
+        {
+          "matches_template": 0,
+          "plate": "10DM",
+          "confidence": 65.86984252929688
+        },
+        {
+          "matches_template": 0,
+          "plate": "1DTM",
+          "confidence": 65.86647033691406
+        },
+        {
+          "matches_template": 0,
+          "plate": "10DT",
+          "confidence": 65.67720794677734
+        },
+        {
+          "matches_template": 0,
+          "plate": "10TM",
+          "confidence": 65.66895294189453
+        },
+        {
+          "matches_template": 0,
+          "plate": "10DIM",
+          "confidence": 65.36500549316406
+        },
+        {
+          "matches_template": 0,
+          "plate": "10DDM",
+          "confidence": 65.34618377685547
+        },
+        {
+          "matches_template": 0,
+          "plate": "1ODTM",
+          "confidence": 65.33760070800781
+        },
+        {
+          "matches_template": 0,
+          "plate": "10D7M",
+          "confidence": 65.33295440673828
+        },
+        {
+          "matches_template": 0,
+          "plate": "11DTM",
+          "confidence": 65.30674743652344
+        }
+      ],
+      "coordinates": [
+        {
+          "y": 321,
+          "x": 532
+        },
+        {
+          "y": 322,
+          "x": 750
+        },
+        {
+          "y": 420,
+          "x": 747
+        },
+        {
+          "y": 420,
+          "x": 532
+        }
+      ],
+      "vehicle": {
+        "orientation": [
+          {
+            "confidence": 99.97704315185547,
+            "name": "180"
+          },
+          {
+            "confidence": 0.012385020032525063,
+            "name": "225"
+          },
+          {
+            "confidence": 0.010270657017827034,
+            "name": "135"
+          },
+          {
+            "confidence": 0.000291547883534804,
+            "name": "0"
+          },
+          {
+            "confidence": 1.623473690415267e-05,
+            "name": "270"
+          },
+          {
+            "confidence": 2.2760816591471666e-06,
+            "name": "45"
+          },
+          {
+            "confidence": 1.193727825921087e-06,
+            "name": "missing"
+          },
+          {
+            "confidence": 7.629796527908184e-07,
+            "name": "315"
+          },
+          {
+            "confidence": 7.057511197672284e-07,
+            "name": "90"
+          }
+        ],
+        "color": [
+          {
+            "confidence": 99.3705825805664,
+            "name": "white"
+          },
+          {
+            "confidence": 0.22328409552574158,
+            "name": "black"
+          },
+          {
+            "confidence": 0.16338570415973663,
+            "name": "silver-gray"
+          },
+          {
+            "confidence": 0.08254140615463257,
+            "name": "red"
+          },
+          {
+            "confidence": 0.06612027436494827,
+            "name": "yellow"
+          },
+          {
+            "confidence": 0.03918344900012016,
+            "name": "gold-beige"
+          },
+          {
+            "confidence": 0.033291276544332504,
+            "name": "blue"
+          },
+          {
+            "confidence": 0.010190865956246853,
+            "name": "green"
+          },
+          {
+            "confidence": 0.008238352835178375,
+            "name": "orange"
+          },
+          {
+            "confidence": 0.0016456369776278734,
+            "name": "brown"
+          }
+        ],
+        "make": [
+          {
+            "confidence": 67.14718627929688,
+            "name": "jaguar"
+          },
+          {
+            "confidence": 29.594009399414062,
+            "name": "fiat"
+          },
+          {
+            "confidence": 0.8337568640708923,
+            "name": "chevrolet"
+          },
+          {
+            "confidence": 0.8052822351455688,
+            "name": "mazda"
+          },
+          {
+            "confidence": 0.5956250429153442,
+            "name": "smart"
+          },
+          {
+            "confidence": 0.44028550386428833,
+            "name": "lotus"
+          },
+          {
+            "confidence": 0.2224932610988617,
+            "name": "nissan"
+          },
+          {
+            "confidence": 0.06148824468255043,
+            "name": "abarth"
+          },
+          {
+            "confidence": 0.05932819843292236,
+            "name": "pontiac"
+          },
+          {
+            "confidence": 0.05692186579108238,
+            "name": "ferrari"
+          }
+        ],
+        "body_type": [
+          {
+            "confidence": 99.79922485351562,
+            "name": "sedan-sports"
+          },
+          {
+            "confidence": 0.16598358750343323,
+            "name": "sedan-standard"
+          },
+          {
+            "confidence": 0.026990747079253197,
+            "name": "sedan-convertible"
+          },
+          {
+            "confidence": 0.00491505628451705,
+            "name": "sedan-compact"
+          },
+          {
+            "confidence": 0.0024884005542844534,
+            "name": "tractor-trailer"
+          },
+          {
+            "confidence": 0.000243974820477888,
+            "name": "motorcycle"
+          },
+          {
+            "confidence": 0.00011291178088868037,
+            "name": "sedan-wagon"
+          },
+          {
+            "confidence": 2.1936131815891713e-05,
+            "name": "suv-standard"
+          },
+          {
+            "confidence": 1.2770459761668462e-05,
+            "name": "antique"
+          },
+          {
+            "confidence": 7.666015335416887e-06,
+            "name": "suv-crossover"
+          }
+        ],
+        "year": [
+          {
+            "confidence": 53.48731994628906,
+            "name": "2010-2014"
+          },
+          {
+            "confidence": 32.64439010620117,
+            "name": "2015-2019"
+          },
+          {
+            "confidence": 13.739574432373047,
+            "name": "2005-2009"
+          },
+          {
+            "confidence": 0.10881005972623825,
+            "name": "2000-2004"
+          },
+          {
+            "confidence": 0.017987480387091637,
+            "name": "1995-1999"
+          },
+          {
+            "confidence": 0.0010182213736698031,
+            "name": "1980-1984"
+          },
+          {
+            "confidence": 0.0008404994150623679,
+            "name": "1990-1994"
+          },
+          {
+            "confidence": 5.5702133977320045e-05,
+            "name": "1985-1989"
+          },
+          {
+            "confidence": 2.353210447836318e-06,
+            "name": "missing"
+          }
+        ],
+        "make_model": [
+          {
+            "confidence": 40.085205078125,
+            "name": "fiat_124-spider"
+          },
+          {
+            "confidence": 37.19046401977539,
+            "name": "jaguar_xk"
+          },
+          {
+            "confidence": 10.158119201660156,
+            "name": "jaguar_xkr"
+          },
+          {
+            "confidence": 8.390144348144531,
+            "name": "mazda_mx-5"
+          },
+          {
+            "confidence": 1.5823628902435303,
+            "name": "chevrolet_corvette"
+          },
+          {
+            "confidence": 1.0966728925704956,
+            "name": "nissan_gt-r"
+          },
+          {
+            "confidence": 0.323159784078598,
+            "name": "jaguar_f-type"
+          },
+          {
+            "confidence": 0.15350183844566345,
+            "name": "lotus_elise"
+          },
+          {
+            "confidence": 0.14657434821128845,
+            "name": "maserati_ghibli"
+          },
+          {
+            "confidence": 0.11619126796722412,
+            "name": "abarth_124-spider"
+          }
+        ]
+      },
+      "matches_template": 0,
+      "requested_topn": 10
+    }
+  ],
+  "credits_monthly_used": 336,
+  "version": 2,
+  "credits_monthly_total": 1000,
+  "error": false,
+  "regions_of_interest": [
+    {
+      "y": 0,
+      "x": 0,
+      "height": 850,
+      "width": 1280
+    }
+  ],
+  "credit_cost": 1
+}

@@ -56,8 +56,7 @@ p{
 	An OCR system specialized for detecting license plates in real-life images,
     with the ability to differentiate between car plates and other texted
     objects like road signs and shop signs. We will experiment with k-means
-    clustering, graph cut methods (and more) to extract plate images and use
-    different OCR systems to recognize plate information.
+    clustering, graph cut methods and other basic image processing techniques to extract plate images, and then use Open ALPR systems to recognize plate information.
 </p>
 <br>
 
@@ -76,10 +75,9 @@ p{
 	href='http://www.openalpr.com/cloud-api.html'>this website</a>.
 </p>
 	<br> <br>
-	<h3>Teaser Figure</h3>
 	<div class='row' style="text-align: center;">
-	<img style="height: 325px;" alt="" src="ALPR-text.png">
-	<img style="height: 325px;" alt="" src="teaser.png">
+	<img style="height: 200px;" alt="" src="ALPR-text.png">
+	<img style="height: 200px;" alt="" src="teaser.png">
 	</div>
 	<br>
 
@@ -111,7 +109,7 @@ p{
     goals was to see which one would preform well in this domain. As such, we
     chose the following algorithms:
 
-    <h4>Image Segmentation</h4>
+    <h4>1) Image Segmentation</h4>
 
     <ul>
         <li>
@@ -129,22 +127,16 @@ p{
             segmentation. For example, if graph cut was unable to extract the
             license plate because the letters were a different color than the
             plate itself, k-means would be better suited to create a segment
-            containing all the letters.
+            containing all the letters. 
         </li>
         <li>
-            <h5>Faster RCNN</h5>
-            Lastly, we will attempt to use a neural network in order to segment
-            the license plates. Recently, neural networks have been growing in
-            popularity, and especially convolutional neural networks in the
-            domain of computer vision. We choose to use the Faster RCNN to
-            segment the images with pre-trained weights. The reason we use
-            pre-trained weights is because we do not have a dataset large enough
-            to cover a significant test and train set.
+            <h5>LPEX</h5>
+            <a href='https://cvisiondemy.com/license-plate-detection-with-opencv-and-python/'> 'LPEX'</a> stands for 'License Plate Extraction', is a plate detection system consists of various basic image processing methods, including morphological operations, Gaussian blurs and edge detection. The idea is to get the contours of the picture, and then check if the contour is a character or not, and decide if they all occur in a small region, which means a plate. If yes, then we can extract that particular region of the image, which ideally should be the area of the plate. This method is able to extract plate area well, but failure case do exist (see below).
         </li>
     </ul>
     </p>
 
-    <h4>Optical Character Recognition</h4>
+    <h4>2) Optical Character Recognition</h4>
     <p>
     As for optical character recognition, we chose to leverage an online API to
     prevent spending too much time developing an adequate OCR application. The
@@ -170,127 +162,156 @@ p{
 
 <br>
 <!-- Results -->
-<h3>Experiments and results</h3>
 
-<h4>
+
+<h3>
     Dataset
-</h4>
+</h3>
 <p>
 
-		One requirement for this project is to collect a dataset. We can leverage 
-	<a href='https://platerecognizer.com/number-plate-datasets/'>this dataset</a>,
-	which is a collection of license plates. We will focus on US license plates.<br>
-    This dataset includes annotations for license plates, so we can easily
-    utilize this dataset to calculate accuracy for a large number of images. To
-    calculate accuracy, we chose to take the number of matching predicted and
-    ground truth annotations and divide that by the number of ground truth
-    annotations and any additional false positives. This would penalize the
-    algorithm for detecting text that is not part of a license plate. More
-    specific techniques to count matching or not matching annotations are
-    included in their respective headings.
+		One requirement for this project is to collect a dataset. We can leverage the OpenALPR benchmark found <a href='https://platerecognizer.com/number-plate-datasets/'>here</a>,
+	which is a collection of license plates. We will focus on US license plates. This dataset includes 111 examples of cars and annotations for license plates, so we can easily utilize this dataset to calculate accuracy for a large number of images. To calculate accuracy, we chose to take the number of matching predicted and ground truth annotations and divide that by the number of ground truth annotations and any additional false positives. This would penalize the algorithm for detecting text that is not part of a license plate. More specific techniques to count matching or not matching annotations are included in their respective headings.
 </p>
 <br>
 
+<h3>Experiments and results</h3>
+<h4>1) KMeans</h4>
+	
+	<p>We use this method and experimented with different numbers of centers. We found out that the more centers we use, the more ‘decomposed’ the images look like, because the area will be divided into more parts, it is hard to read out the plate information. Therefore, in order to save time and reach optimal result, we only use 3 centers. The advantage of using KMeans is that it can potentially filter out texts of different colors (like logos, car paints), which is very useful. See below:</p><br><br>
+
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/car2.jpg">
+<img style="width: 450px;" alt="" src="res/car2_center_2.png">
+<div  style="text-align: center;"><b>Notice that only the plate is visible in this clustered image</b></div>
+</div>
+<br><br>
+<p>
+	We ran this method on all 111 samples and it took about 45 minutes in total to process. The accuracy is about 92.6%, if we use the formula: Correctly Recognized Character / Total Character. See the more detailed accuracy in the following section. 
+</p>
+<p>Here is a good example: </p>
+
+<br>
+<div class='row' style="text-align: center;">
+<img style="height: 250px;" alt="" src="res/car7.jpg">
+<img style="height: 250px;" alt="" src="res/car7_center_1.png">
+<img style="height: 250px;" alt="" src="res/car7_res.png">
+</div>
+<br>
+<div  style="text-align: center;"><b>K-means clustering segmentation results (Open in new tab to view larger)</b></div>
+
+<br>
+<p>
+	At first glance one could see this is potentially a good result for extracting image segments, because we can differentiate plate information. Also, since plate numbers are usually written in one consistent color, k-means can definitely be a way to approach the problem. However, k-means clustering heavily relies on the initial points that we choose. Even with the same cluster number (k=15 in the example above), each run can render different segmentation results. 
+
+	Also, when input images have low resolution, it becomes impossible to read the clustered image. See below. Another problem with k-means clustering, due to how it works, is that we cannot filter out segments that are not license plates, so passing these into the OCR algorithm will either yield no results or jumbled results. <br>
+</p>
+
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/car16.jpg"></div><br>
+
+<div class='row' style="text-align: center;">
+<img style="width: 300px;" alt="" src="res/car16_center_0.png">
+<img style="width: 300px;" alt="" src="res/car16_center_1.png">
+<img style="width: 300px;" alt="" src="res/car16_center_2.png"></div>
+<div  style="text-align: center;"><b>Failure Case (Unable to extract a legible plate)</b></div>
+
+<h4>
+    Graph Cut
+</h4>
+<p>
+	Another algorithm we tried for image segmentation is graph cut using GMM combined with min cut. See sample outputs below. The advantage of graph cut is that it can filter out segments without plates, so that the input image passed to OCR part is guaranteed to have plate information and thus not wasting running time. But this method, too, has its limitations. To use this algorithm, we have to manually select a rectangle area that contains useful information, i.e., foreground object. If algorithm doesn't filter out the plate, we can further provide a "mask" that highlights foreground objects and mask background objects. This method works well when we have only a handful of images to process. When we wanted to provide a bigger dataset for neural network models, it becomes tedious labor work. Therefore, we didn't proceed with this method.</p>
+	<br><br>
+
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/ams_car/rect_seg_philly.jpg">
+<img style="width: 450px;" alt="" src="res/ams_car/mask_seg_philly.jpg">
+</div>
+
+<div  style="text-align: center;"><b>Left: Graph cut segmentation result, using only rectangle area selection. Right: Graph cut segmentation result, using mask selection, specifically including plate area </b></div>
+<br> <br> <br>
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/ams_car/amsterdam.jpg">
+<img style="width: 450px;" alt="" src="res/ams_car/rect_seg_ams.jpg">
+</div>
+<div  style="text-align: center;"><b>Left: Original Image: <a href='https://www.amsterdam.nl/en/parking/on-street-parking/'> Amsterdam Car</a>. Right: Segmented image result, using only rectangle area selection</b></div>
+<br>
+
+<h4> LPEX </h4>
+
+<p>
+	We further implemented another package called LPEX. It is a system using different image processing tools to extract the plate area. The result will be small images of plates. It uses morphological methods like Top Hat and Black Hat to enhance the image, Gaussian blur with threshold to extract contours and then check each coutour to decide if it looks like a character. If such characters are found, the sustem futher checks if they all occur within a small region (change in area should be samll) and if they are long enough to be plate numbers.
+	Given a list of such characters' positions, we can generate a rectangle around them and cut the image based on the rectangle's coordinates. 
+
+	This method successfully extracted 64 out of 111 images, which is around 57.7%. The extracted image are very accurate in capturing the location of the plate.<br>
+</p>
+
+<div class='row' style="text-align: center;">
+<img style="width: 450px;" alt="" src="res/car15.jpg"></div>
+<div  style="text-align: center;"><b>Original Image</b></div>
+<br><br>
+<div class='row' style="text-align: center;"><img style="width: 100px;" alt="" src="res/car15_0.png"></div>
+<div  style="text-align: center;"><b>Extracted Plate</b></div>
+<br><br>
+
+<p>
+However, OCR didn't render good results, it is only able to recognize 7 out of 108 images, accuracy is only around 6.5%. Even though the images we put in are good examples of plates. The reason might be first, the input images are too small, given it is only a plate. Secondly, the OCR system we used probably did not expect the input image to be an extracted plate image. If it treats the plate images to be a normal image with cars, surroundings, then it is possible that the recognition rate is low.
+</p>
+<p>
+	For example, the OCR is able to recognize the plate number in the upper image, but not the one down.
+</p>
+<br>
+<div class='row' style="text-align: center;">
+<img style="height: 70px;" alt="" src="res/car28.png"> <br><br>
+<img style="height: 70px;" alt="" src="res/car11.png"></div>
+
+<div  style="text-align: center;"><b>Two Extracted Plates</b></div>
+
+
+
+<br><br>
 <h3>Qualitative Results</h3>
 <h4>
     Pure OCR
 </h4>
-Accuracy: 204/222
-False Positives: 0
-False Negatives: 222 - 204 = 18 plates that were not detected/recognized
+Accuracy: 102/111 = 91.9% <br>
+False Positives: 0 <br>
+False Negatives: 9/111 = 8.1% (Plates that were not detected/recognized)<br>
 <h4>
     K-Means Approach
 </h4>
-Accuracy: 146/313.
-False Postives: 313 - 222 = 91 Plates detected that were not actually plates
-False Negatives: 222 - 146 = 76 plates that were not detected/recognized
+Accuracy: 146/313 = 46.65% <br>
+False Postives: 91/313 = 29.1% (Plates detected that were not actually plates)<br>
+False Negatives: 76/313 = 24.28% (Plates that were not detected/recognized)<br>
+Character by Character Accuracy: 92.6%<br>
 
 <h4>
-    Graph Cut
+    LPEX Approach
 </h4>
-No results?
+Accuracy: 7/108 = 6.48% <br>
+Car Plate Detection Rate: 64/111 = 57.7%
+<br><br>
 
 
-<br>
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/phillycar.png">
-</div>
-<div  style="text-align: center;"><b>Original Sample Image: <a href='https://whyy.org/articles/illegal-parkers-beware-philadelphia-wants-you-out-of-the-crosswalk-and-off-the-sidewalk/'> Philly Car </a></b></div>
-<br>
-<br> <br>
-<div class='row' style="text-align: center;">
-<img style="width: 225px;" alt="" src="res/kmeans/center 0.png">
-<img style="width: 225px;" alt="" src="res/kmeans/center 2.png">
-<img style="width: 225px;" alt="" src="res/kmeans/center 4.png">
-<img style="width: 225px;" alt="" src="res/kmeans/center 6.png">
-<img style="width: 225px;" alt="" src="res/kmeans/center 8.png">
-</div>
-<div  style="text-align: center;"><b>K-means clustering segmentation results</b></div>
+<h3>Conclusion and Future Steps</h3>
 
-<br>
-<p>
-	At first glance one could see this is potentially a good result for extracting image segments, because we can differentiate plate information. Also, since plate numbers are usually written in one consistent color, k-means can definitely be a way to approach the problem. However, k-means clustering heavily relies on the initial points that we choose. Even with the same cluster number (k=15 in the example above), each run can render different segmentation results. In some runs, the plate information is well decomposed and we cannot read it in any segments. Another problem with k-means clustering, due to how it works, is that we cannot filter out segments that are not license plates, so passing these into the OCR algorithm will either yield no results or jumbled results. <br>
-</p>
+This project briefly explores some image segmentation techniques and utilize OCR tools to detect car plates in images. The results are not the best and each methods has its limitations. Kmeans are subject to initial points, cannot work on low-resolution pictures, graph cut required human practice. Although LPEX did well in extracting plates, the OCR results were not so good. Here are some thought we have as to how to improve:
 
-<h4>
-    Graph Cut
-</h4>
-<p>
-	Another algorithm we tried for image segmentation is graph cut using GMM combined with min cut. See sample outputs below. The advantage of graph cut is that it can filter out segments without plates, so that the input image passed to OCR part is guaranteed to have plate information and thus not wasting running time. But this method, too, has its limitations. To use this algorithm, we have to manually select a rectangle area that contains useful information, i.e., foreground object. If algorithm doesn't filter out the plate, we can further provide a "mask" that highlights foreground objects and mask background objects. This method works well when we have only a handful of images to process. When we wanted to provide a bigger dataset for neural network models, it becomes tedious labor work. 
-	<br><br>
-</p>
-
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/graphcut/rect_seg_philly.jpg">
-</div>
-
-<div  style="text-align: center;"><b>Graph cut segmentation result, using only rectangle area selection </b></div>
-<br>
-
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/graphcut/mask_seg_philly.jpg">
-</div>
-
-<div  style="text-align: center;"><b>SGraph cut segmentation result, using mask selection, specifically including plate area </b></div>
-<br>
-
-
-<br> <br>
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/amsterdam.jpg">
-</div>
-<div  style="text-align: center;"><b>Original Sample Image: <a href='https://www.amsterdam.nl/en/parking/on-street-parking/'> Amsterdam Car  </a></b></div>
-<br>
-
-<div class='row' style="text-align: center;">
-<img style="width: 450px;" alt="" src="res/graphcut/rect_seg_ams.jpg">
-</div>
-
-<div  style="text-align: center;"><b>Segmented (Extracted) image result, using only rectangle area selection</b></div>
-<br>
-
-<h3>Conclusion</h3>
-In conclusion...
-
-<h3>Future Steps</h3>
 <ul>
     <li>
-        Different OCR - more lightweight might make similar results?
+        To save time but preserve accuracy, we can try different OCR tools, which might be more lightweight but has similar results.
     </li>
     <li>
-        For K-means and Graph Cut - maybe identifying segmented license plates
+        Right now identifying areas containing plates for Graph cut methods is manual. And to calculate character accuracy is manual, too. Are there ways to replace labor and let the system to do the work?
     </li>
     <li>
-        Using confidence (OCR and image segmentation) to generate a combined
-        confidence
+        To improve plate detection result by training our own model. We can utilize Faster-CNN or YOLO algorithms.
+    </li>
+    <li>
+    	We can use confidence of OCR and image segmentation to generate a combined
+        confidence.
     </li>
 </ul>
-<br>
-	
-<p>
-	Our work is included in this <a
-    href='https://github.com/shuyteng/CS6476-Project'>Github Repo</a>.
-</p>
+
 <!--
 Provide details about the experimental set up (number of images/videos, number
 of datasets you experimented with, train/test split if you used machine learning
@@ -312,10 +333,9 @@ expected? Why?
 1. <a href='https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_grabcut/py_grabcut.html'> Interactive Foreground Extraction using GrabCut Algorithm </a> <br>
 2. <a href='https://towardsdatascience.com/introduction-to-image-segmentation-with-k-means-clustering-83fd0a9e2fc3'> Introduction to Image Segmentation with K-Means clustering </a> <br>
 3. <a href='https://www.openalpr.com/cloud-api.html'> OpenALPR Cloud API </a><br>
-4. <a href='https://arxiv.org/abs/1506.01497'>Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</a> <br>
-5. <a href='https://platerecognizer.com/number-plate-datasets/'>Number Plate Datasets</a> <br>
-6. <a href='https://arxiv.org/abs/1506.02640'>You Only Look Once: Unified, Real-Time Object Detection</a><br>
-
+4. <a href='https://platerecognizer.com/number-plate-datasets/'>Number Plate Datasets</a> <br>
+5. <a href='https://cvisiondemy.com/license-plate-detection-with-opencv-and-python/'> License plate detection with OpenCV and Python</a><br>
+6. <a href='https://github.com/Link009/LPEX'> LPEX - License Plate EXtractor </a>
 <br><br>
 
 </div>
